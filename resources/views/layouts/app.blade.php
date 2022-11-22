@@ -67,7 +67,7 @@
                             {{-- <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li> --}}
                             {{-- <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li> --}}
                         @else
-                            <li><a href="{{ url('/students') }}"
+                            <li><a href="{{ url('/teachers') }}"
                                     class="nav-link {{ starts_with(Route::currentRouteName(), 'teachers') ? 'active' : '' }}">Guru</a>
                             </li>
                             <li><a href="{{ url('/students') }}"

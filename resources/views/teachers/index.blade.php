@@ -19,18 +19,8 @@
                         @endif
                         <div class="row">
                             <div class="col-sm-4 my-mr-bottom">
-                                <a href="{{ url('/students/create') }}" class="btn btn-primary" role="button">Tambah
-                                    Siswa</a>
-                            </div>
-                            <div class="col-sm-4 my-pagination-center">
-                                {{ $students->appends(Request::input())->render() }}
-                            </div>
-                            <div class="col-sm-4 my-mr-bottom">
-                                <form action="/students">
-                                    <input name="search" class="form-control" type="search"
-                                        placeholder="S e a r c h  .  .  ." value="{{ $search }}" data-toggle="tooltip"
-                                        data-placement="top" title="Cari NIS / Nama / Kelas">
-                                </form>
+                                <a href="{{ url('/teachers/create') }}" class="btn btn-primary" role="button">Tambah
+                                    Guru Mata Pelajaran</a>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -38,26 +28,23 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">No</th>
-                                        <th scope="col">NIS</th>
                                         <th scope="col">Nama</th>
-                                        <th scope="col">Kelas</th>
+                                        <th scope="col">Mata Pelajaran</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php $i = $students->firstItem() @endphp
-                                    @forelse ($students as $student)
+                                    @forelse ($teachers as $teacher)
                                         <tr>
-                                            <th scope="row">{{ $i }}</th>
-                                            <td>{{ $student->code }}</td>
-                                            <td>{{ $student->name }}</td>
-                                            <td>{{ $student->class }}</td>
+                                            <td scope="row">{{ $loop->index }}</td>
+                                            <td>{{ $teacher->name }}</td>
+                                            <td>{{ $teacher->studi }}</td>
                                             <td>
-                                                <a href="/students/{{ $student->id }}" class="btn btn-info btn-sm"
+                                                <a href="/teachers/{{ $teacher->id }}" class="btn btn-info btn-sm"
                                                     role="button">View</a>
-                                                <a href="/students/{{ $student->id }}/edit" class="btn btn-primary btn-sm"
+                                                <a href="/teachers/{{ $teacher->id }}/edit" class="btn btn-primary btn-sm"
                                                     role="button">Edit</a>
-                                                <form action="/students/{{ $student->id }}" method="POST"
+                                                <form action="/teachers/{{ $teacher->id }}" method="POST"
                                                     style="display:inline">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="_method" value="DELETE">
@@ -65,13 +52,12 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                        @php $i++ @endphp
                                     @empty
-                                        <tr>
-                                            <td colspan="5">
-                                                <h3 class="text-center font-weight-bold">Data Kosong</h3>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <h3 class="text-center font-weight-bold">Data Kosong</h3>
+                                        </td>
+                                    </tr>
                                     @endforelse
                                 </tbody>
                             </table>
