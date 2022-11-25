@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
+    public $study = [
+        'Pendidikan Agama'
+    ];
+    public function getMessage($code, $type)
+    {
+        $msg = 'Siswa dengan NIS <strong>' . $code . '</strong> berhasil di <strong>' . $type . '</strong>';
+        return $msg;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +45,8 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $study = $this->study;
+        return view('teachers.create', compact('study'));
     }
 
     /**
