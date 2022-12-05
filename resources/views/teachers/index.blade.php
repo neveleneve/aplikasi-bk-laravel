@@ -36,14 +36,12 @@
                                 <tbody>
                                     @forelse ($teachers as $teacher)
                                         <tr>
-                                            <td scope="row">{{ $loop->index }}</td>
+                                            <td scope="row">{{ $loop->index + 1 }}</td>
                                             <td>{{ $teacher->name }}</td>
-                                            <td>{{ $teacher->studi }}</td>
+                                            <td>{{ $teacher->nama }}</td>
                                             <td>
-                                                <a href="/teachers/{{ $teacher->id }}" class="btn btn-info btn-sm"
-                                                    role="button">View</a>
-                                                <a href="/teachers/{{ $teacher->id }}/edit" class="btn btn-primary btn-sm"
-                                                    role="button">Edit</a>
+                                                <a href="{{ route('teachers.edit', ['id' => $teacher->id]) }}"
+                                                    class="btn btn-primary btn-sm" role="button">Edit</a>
                                                 <form action="/teachers/{{ $teacher->id }}" method="POST"
                                                     style="display:inline">
                                                     {{ csrf_field() }}
@@ -53,11 +51,11 @@
                                             </td>
                                         </tr>
                                     @empty
-                                    <tr>
-                                        <td colspan="4">
-                                            <h3 class="text-center font-weight-bold">Data Kosong</h3>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <h3 class="text-center font-weight-bold">Data Kosong</h3>
+                                            </td>
+                                        </tr>
                                     @endforelse
                                 </tbody>
                             </table>

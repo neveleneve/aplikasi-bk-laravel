@@ -43,7 +43,7 @@
                             alt="Generic placeholder image" width="50px" height="50px">
                         <div class="media-body">
                             <h4 class="mt-0 mb-1 font-weight-bold">Bimbingan Konseling</h4>
-                            <h6 class="mt-0 mb-0" style="letter-spacing: 2px">SMK NEGERI 1 MAJALAYA</h6>
+                            <h6 class="mt-0 mb-0" style="letter-spacing: 2px">SMA NEGERI 4 TANJUNGPINANG</h6>
                         </div>
                     </div>
                 </a>

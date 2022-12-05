@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mapel;
 use App\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TeacherController extends Controller
 {
-    public $study = [
-        'Pendidikan Agama'
-    ];
     public function getMessage($code, $type)
     {
         $msg = 'Siswa dengan NIS <strong>' . $code . '</strong> berhasil di <strong>' . $type . '</strong>';
@@ -23,7 +22,14 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teachers = Teacher::get();
+        $teachers = DB::table('teachers')
+            ->join('mapels', 'teachers.mapel_id', '=', 'mapels.id')
+            ->select([
+                'teachers.id',
+                'teachers.name',
+                'mapels.nama',
+            ])
+            ->get();
         return view('teachers.index', compact('teachers'));
     }
 
@@ -34,7 +40,8 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        //
+        $study = Mapel::get();
+        return view('teachers.create', compact('study'));
     }
 
     /**
@@ -45,8 +52,11 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        $study = $this->study;
-        return view('teachers.create', compact('study'));
+        Teacher::insert([
+            'name' => $request->nama,
+            'mapel_id' => $request->mapel,
+        ]);
+        return redirect(route('teachers.index'));
     }
 
     /**
@@ -91,6 +101,8 @@ class TeacherController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $teacher = Teacher::findOrFail($id);
+        $teacher->delete();
+        return redirect(route('teachers.index'));
     }
 }
