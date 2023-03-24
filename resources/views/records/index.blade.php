@@ -69,11 +69,12 @@
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                                             <a class="dropdown-item"
-                                                                href="/record/{{ $record->id }}">View</a>
+                                                                href="/record/{{ $record->id }}">Lihat Data</a>
                                                             <a class="dropdown-item"
-                                                                href="/record/{{ $record->id }}/edit">Edit</a>
+                                                                href="/record/{{ $record->id }}/edit">Ubah Data</a>
                                                             <a class="dropdown-item" href="#"
-                                                                onclick="event.preventDefault(); document.getElementById('delete-record-form').submit();">Delete
+                                                                onclick="event.preventDefault(); document.getElementById('delete-record-form').submit();">Hapus
+                                                                Data
                                                             </a>
                                                             <form id="delete-record-form"
                                                                 action="/record/{{ $record->id }}" method="POST"
@@ -82,7 +83,7 @@
                                                                 <input type="hidden" name="_method" value="DELETE">
                                                             </form>
                                                             <a class="dropdown-item" target="__blank"
-                                                                href="/record/{{ $record->id }}/pdf">Print</a>
+                                                                href="/record/{{ $record->id }}/pdf">Cetak Bimbingan</a>
                                                         </div>
                                                     </div>
                                                 </div>

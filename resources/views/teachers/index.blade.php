@@ -41,12 +41,12 @@
                                             <td>{{ $teacher->nama }}</td>
                                             <td>
                                                 <a href="{{ route('teachers.edit', ['id' => $teacher->id]) }}"
-                                                    class="btn btn-primary btn-sm" role="button">Edit</a>
+                                                    class="btn btn-primary btn-sm" role="button">Ubah Data</a>
                                                 <form action="/teachers/{{ $teacher->id }}" method="POST"
                                                     style="display:inline">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="_method" value="DELETE">
-                                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                                    <button class="btn btn-danger btn-sm">Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>

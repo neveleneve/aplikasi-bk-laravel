@@ -54,14 +54,14 @@
                                             <td>{{ $student->class }}</td>
                                             <td>
                                                 <a href="/students/{{ $student->id }}" class="btn btn-info btn-sm"
-                                                    role="button">View</a>
+                                                    role="button">Riwayat Bimbingan</a>
                                                 <a href="/students/{{ $student->id }}/edit" class="btn btn-primary btn-sm"
-                                                    role="button">Edit</a>
+                                                    role="button">Ubah Data</a>
                                                 <form action="/students/{{ $student->id }}" method="POST"
                                                     style="display:inline">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="_method" value="DELETE">
-                                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                                    <button class="btn btn-danger btn-sm">Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>
