@@ -71,19 +71,21 @@ class RecordController extends Controller
     {
         $this->validate($request, [
             'date' => 'required',
+            'guru' => 'required',
             'subservice_id' => 'required',
             'place' => 'required',
             'desc' => 'required',
             'info' => 'required',
             'students.id.0' => 'required'
         ]);
-
+        // dd($request->all());
         // Save to record
         $record = Record::create([
             'date' => $request->date,
             'subservice_id' => $request->subservice_id,
             'place' => $request->place,
             'desc' => $request->desc,
+            'id_guru' => $request->guru,
             'info' => $request->info
         ]);
 
@@ -115,7 +117,15 @@ class RecordController extends Controller
     {
         $record   = Record::with('students')->findOrFail($id);
         $services = Service::with('subservices')->get();
-        return view('records.edit', compact('record', 'services'));
+        $teachers = DB::table('teachers')
+            ->join('mapels', 'teachers.mapel_id', '=', 'mapels.id')
+            ->select([
+                'teachers.id',
+                'teachers.name',
+                'mapels.nama',
+            ])
+            ->get();
+        return view('records.edit', compact('record', 'services', 'teachers'));
     }
 
     /**
@@ -130,6 +140,7 @@ class RecordController extends Controller
         $this->validate($request, [
             'date'          => 'required',
             'subservice_id' => 'required',
+            'guru'          => 'required',
             'place'         => 'required',
             'desc'          => 'required',
             'info'          => 'required',
@@ -141,6 +152,7 @@ class RecordController extends Controller
         // Update record
         $record->update([
             'date'          => $request->date,
+            'id_guru'          => $request->guru,
             'subservice_id' => $request->subservice_id,
             'place'         => $request->place,
             'desc'          => $request->desc,
@@ -181,5 +193,17 @@ class RecordController extends Controller
             ->setPaper('a4', 'potrait')
             ->setOptions(['defaultFont' => 'sans-serif', 'isRemoteEnabled' => true])
             ->stream('LaporanKegiatan-' . $record->id . '-' . now()->format('dmY') . '.pdf');
+    }
+
+    public static function namaGuru($id)
+    {
+        $guru = Teacher::where('teachers.id', $id)->join('mapels', 'teachers.mapel_id', '=', 'mapels.id')
+            ->select([
+                'teachers.id',
+                'teachers.name',
+                'mapels.nama',
+            ])
+            ->get();
+        return $guru[0]->name . ' - ' . $guru[0]->nama;
     }
 }

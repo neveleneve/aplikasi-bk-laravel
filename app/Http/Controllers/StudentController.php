@@ -24,9 +24,9 @@ class StudentController extends Controller
     }
 
     // Fungsi untuk pesan
-    public function getMessage($code, $type)
+    public function getMessage($code, $type, $name = null)
     {
-        $msg = 'Siswa dengan NIS <strong>' . $code . '</strong> berhasil di <strong>' . $type . '</strong>';
+        $msg = 'Siswa dengan Nama <strong>' . $name . '</strong> dan NIS <strong>' . $code . '</strong> berhasil di <strong>' . $type . '</strong>';
         return $msg;
     }
 
@@ -81,7 +81,7 @@ class StudentController extends Controller
             'class'   => $class
         ]);
 
-        $msg = $this->getMessage($request->code, 'Tambah');
+        $msg = $this->getMessage($request->code, 'Tambah', $request->name);
 
         return redirect('students')->with('msg', $msg);
     }

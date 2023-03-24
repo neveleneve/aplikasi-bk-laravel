@@ -45,7 +45,7 @@
                                         <input name="place" type="text" class="form-control"
                                             value="{{ old('place') }}">
                                     </div>
-                                    {{-- <div class="form-group">
+                                    <div class="form-group">
                                         <label for="guru">Guru yang Terlibat</label>
                                         <select name="guru" id="guru" class="form-control">
                                             <option selected hidden>Pilih Guru</option>
@@ -55,7 +55,7 @@
                                                     {{ $item->nama }}</option>
                                             @endforeach
                                         </select>
-                                    </div> --}}
+                                    </div>
                                     <div class="form-group">
                                         <label for="desc">Uraian Kegiatan</label>
                                         <textarea name="desc" rows="4" class="form-control">{{ old('desc') }}</textarea>

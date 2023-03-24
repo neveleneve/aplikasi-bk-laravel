@@ -127,6 +127,17 @@
             <td>{{ $record->info }}</td>
         </tr>
         <tr>
+            <td>Guru yang Terlibat</td>
+            <td>:</td>
+            <td>
+                @if ($record->id_guru == 0)
+                    Tidak Melibatkan Guru
+                @else
+                    {{ App\Http\Controllers\RecordController::namaGuru($record->id_guru) }}
+                @endif
+            </td>
+        </tr>
+        <tr>
             <td>Konselor</td>
             <td>:</td>
             <td>{{ Auth::user()->name }}</td>
@@ -158,7 +169,7 @@
         <tbody>
 
             <tr>
-                <td>Tanggal,</td>
+                <td>Tanggal,.............................</td>
             </tr>
             <tr>
                 <td>Tertanda,</td>

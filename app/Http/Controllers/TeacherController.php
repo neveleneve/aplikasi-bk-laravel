@@ -11,7 +11,7 @@ class TeacherController extends Controller
 {
     public function getMessage($code, $type)
     {
-        $msg = 'Siswa dengan NIS <strong>' . $code . '</strong> berhasil di <strong>' . $type . '</strong>';
+        $msg = 'Guru dengan Nama <strong>' . $code . '</strong> berhasil di <strong>' . $type . '</strong>';
         return $msg;
     }
 
@@ -52,11 +52,18 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'nama'    => 'required',
+            'mapel'   => 'required'
+        ]);
+
         Teacher::insert([
             'name' => $request->nama,
             'mapel_id' => $request->mapel,
         ]);
-        return redirect(route('teachers.index'));
+        $msg = $this->getMessage(ucwords(strtolower($request->nama)), 'Tambah');
+
+        return redirect(route('teachers.index'))->with('msg', $msg);
     }
 
     /**
@@ -67,7 +74,6 @@ class TeacherController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -78,7 +84,10 @@ class TeacherController extends Controller
      */
     public function edit($id)
     {
-        //
+        $study = Mapel::get();
+        $teacher = Teacher::find($id);
+        // dd($teacher);
+        return view('teachers.edit', compact('study', 'teacher'));
     }
 
     /**
@@ -90,7 +99,19 @@ class TeacherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'nama'    => 'required',
+            'mapel'   => 'required'
+        ]);
+
+        $teacher = Teacher::findOrFail($id);
+        $teacher->update([
+            'name' => $request->nama,
+            'mapel_id' => $request->mapel,
+        ]);
+        $msg = $this->getMessage(ucwords(strtolower($request->nama)), 'Edit');
+
+        return redirect(route('teachers.index'))->with('msg', $msg);
     }
 
     /**
