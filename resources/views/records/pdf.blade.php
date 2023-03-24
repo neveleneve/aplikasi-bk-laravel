@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Laporan Kegitatan {{ $record->id }} | {{ now()->format('Ymd') }}</title>
-    <link href="{{ asset('images/logo.png') }}" rel="icon" type="image/png">     
+    <link href="{{ asset('images/logo.png') }}" rel="icon" type="image/png">
     <style>
         table {
             width: 100%;
@@ -22,19 +23,23 @@
             border-bottom: 2px solid black;
             width: 100%;
         }
+
         .report-header td {
             text-align: center;
             /*border: 1px solid green;*/
         }
+
         .head1 {
             font-size: 20px;
             letter-spacing: 2px;
         }
+
         .head2 {
             font-size: 22px;
             font-weight: bold;
             letter-spacing: 3px;
         }
+
         .head3 {
             font-size: 12px;
             letter-spacing: 1px;
@@ -47,10 +52,13 @@
             vertical-align: top;
             text-align: justify;
         }
+
         .report-siswa {
             border-collapse: collapse;
         }
-        .report-siswa td, .report-siswa th {
+
+        .report-siswa td,
+        .report-siswa th {
             text-align: center;
             /* height: 30px; */
             padding: 5px 10px;
@@ -59,23 +67,30 @@
 
         .text-right {
             text-align: right;
-        } 
-        .text-left, td.text-left {
+        }
+
+        .text-left,
+        td.text-left {
             text-align: left;
         }
+
         .text-center {
             text-align: center;
-        }                       
+        }
     </style>
 </head>
+
 <body>
     <table class="report report-header">
         <tr>
-            <td style="width: 15%;"><img src="images/logo.png" style="width: 70px;"></td>
+            <td style="width: 15%;">
+                <img src="{{ asset('images/logo.png') }}" style="width: 70px;">
+                {{-- <img src="https://bklaravel.test/images/logo.jpg" style="width: 70px;"> --}}
+            </td>
             <td style="width: 85%;">
-              <div class="head1">LAPORAN KEGIATAN BIMBINGAN KONSELING</div>
-              <div class="head2">SMK NEGERI 1 MAJALAYA</div>
-              <div class="head3">JL.Idris No.99 Rancajigang Kec. Majalaya Kab.Bandung Telp. (021) 52725477</div>
+                <div class="head1">LAPORAN KEGIATAN BIMBINGAN KONSELING</div>
+                <div class="head2">SMA NEGERI 4 Tanjungpinang</div>
+                <div class="head3">Jl. Pemuda No. 30 Kota Tanjungpinang Telp. (0771) 21717</div>
             </td>
         </tr>
     </table>
@@ -132,8 +147,9 @@
                 <td>{{ $student->room }}</td>
             </tr>
         @endforeach
-    </table>    
-    
-    <p class="text-right" style="font-size: 13px">Dicetak Pada: {{ now()->format('d-m-Y H:i') }}</p>   
+    </table>
+
+    <p class="text-right" style="font-size: 13px">Dicetak Pada: {{ now()->format('d-m-Y H:i') }}</p>
 </body>
+
 </html>

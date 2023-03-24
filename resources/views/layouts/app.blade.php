@@ -67,9 +67,9 @@
                             {{-- <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li> --}}
                             {{-- <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li> --}}
                         @else
-                            <li><a href="{{ url('/teachers') }}"
+                            {{-- <li><a href="{{ url('/teachers') }}"
                                     class="nav-link {{ starts_with(Route::currentRouteName(), 'teachers') ? 'active' : '' }}">Guru</a>
-                            </li>
+                            </li> --}}
                             <li><a href="{{ url('/students') }}"
                                     class="nav-link {{ starts_with(Route::currentRouteName(), 'students') ? 'active' : '' }}">Siswa</a>
                             </li>

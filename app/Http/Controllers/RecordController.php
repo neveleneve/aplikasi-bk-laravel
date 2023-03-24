@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service;
 use App\Record;
+use App\Teacher;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class RecordController extends Controller
@@ -17,24 +19,24 @@ class RecordController extends Controller
     public function index(Request $request)
     {
         $search  = $request->search;
-        $records = Record::with('subservice','students');
+        $records = Record::with('subservice', 'students');
         if ($search) {
-            $records = $records->where(function($query) use($search){
-                $query->where('date', 'like', '%'.$search.'%');
+            $records = $records->where(function ($query) use ($search) {
+                $query->where('date', 'like', '%' . $search . '%');
                 $columns = ['place', 'desc', 'info'];
                 foreach ($columns as $column) {
-                    $query->orWhere($column, 'like', '%'.$search.'%');
+                    $query->orWhere($column, 'like', '%' . $search . '%');
                 }
-                
-                $query->orWhereHas('subservice', function($q) use($search){
-                    $q->where('name', 'like', '%'.$search.'%');
-                });                
 
-                $query->orWhereHas('students', function($q) use($search){
-                    $q->where('code', 'like', '%'.$search.'%');
-                    $q->orWhere('name', 'like', '%'.$search.'%');
+                $query->orWhereHas('subservice', function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
                 });
-            });          
+
+                $query->orWhereHas('students', function ($q) use ($search) {
+                    $q->where('code', 'like', '%' . $search . '%');
+                    $q->orWhere('name', 'like', '%' . $search . '%');
+                });
+            });
         }
         $records = $records->orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(3);
         return view('records.index', compact('records', 'search'));
@@ -48,7 +50,15 @@ class RecordController extends Controller
     public function create()
     {
         $services = Service::with('subservices')->get();
-        return view('records.create', compact('services'));        
+        $teachers = DB::table('teachers')
+            ->join('mapels', 'teachers.mapel_id', '=', 'mapels.id')
+            ->select([
+                'teachers.id',
+                'teachers.name',
+                'mapels.nama',
+            ])
+            ->get();
+        return view('records.create', compact('services', 'teachers'));
     }
 
     /**
@@ -60,23 +70,23 @@ class RecordController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'date'          => 'required',
+            'date' => 'required',
             'subservice_id' => 'required',
-            'place'         => 'required',
-            'desc'          => 'required',
-            'info'          => 'required',
+            'place' => 'required',
+            'desc' => 'required',
+            'info' => 'required',
             'students.id.0' => 'required'
-        ]);   
+        ]);
 
         // Save to record
         $record = Record::create([
-            'date'          => $request->date,
+            'date' => $request->date,
             'subservice_id' => $request->subservice_id,
-            'place'         => $request->place,
-            'desc'          => $request->desc,
-            'info'          => $request->info
-        ]);    
-        
+            'place' => $request->place,
+            'desc' => $request->desc,
+            'info' => $request->info
+        ]);
+
         // Save to record_student
         $record->students()->attach($request->students['id']);
 
@@ -91,7 +101,7 @@ class RecordController extends Controller
      */
     public function show($id)
     {
-        $record = Record::with('subservice','students')->findOrFail($id);
+        $record = Record::with('subservice', 'students')->findOrFail($id);
         return view('records.single', compact('record'));
     }
 
@@ -105,7 +115,7 @@ class RecordController extends Controller
     {
         $record   = Record::with('students')->findOrFail($id);
         $services = Service::with('subservices')->get();
-        return view('records.edit', compact('record','services'));         
+        return view('records.edit', compact('record', 'services'));
     }
 
     /**
@@ -124,7 +134,7 @@ class RecordController extends Controller
             'desc'          => 'required',
             'info'          => 'required',
             'students.id.0' => 'required'
-        ]);  
+        ]);
 
         $record = Record::findOrFail($id);
 
@@ -135,8 +145,8 @@ class RecordController extends Controller
             'place'         => $request->place,
             'desc'          => $request->desc,
             'info'          => $request->info
-        ]);    
-        
+        ]);
+
         // Update record_student
         $record->students()->sync($request->students['id']);
 
@@ -163,13 +173,13 @@ class RecordController extends Controller
      */
     public function pdf($id)
     {
-        $record = Record::with('subservice.service','students')->findOrFail($id);
+        $record = Record::with('subservice.service', 'students')
+            ->findOrFail($id);
         // dd($record);
         // return view('records.pdf', compact('record'));
         return PDF::loadView('records.pdf', compact('record'))
-                ->setPaper('a4', 'potrait')
-                ->setOptions(['defaultFont' => 'sans-serif'])
-                ->stream('LaporanKegiatan-'.$record->id.'-'.now()->format('dmY').'.pdf');           
+            ->setPaper('a4', 'potrait')
+            ->setOptions(['defaultFont' => 'sans-serif', 'isRemoteEnabled' => true])
+            ->stream('LaporanKegiatan-' . $record->id . '-' . now()->format('dmY') . '.pdf');
     }
-
 }

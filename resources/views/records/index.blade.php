@@ -81,7 +81,7 @@
                                                                 @csrf
                                                                 <input type="hidden" name="_method" value="DELETE">
                                                             </form>
-                                                            <a class="dropdown-item"
+                                                            <a class="dropdown-item" target="__blank"
                                                                 href="/record/{{ $record->id }}/pdf">Print</a>
                                                         </div>
                                                     </div>
@@ -89,6 +89,11 @@
                                             </td>
                                         </tr>
                                     @empty
+                                        <tr>
+                                            <td colspan="8">
+                                                <h3 class="text-center font-weight-bold">Data Kosong</h3>
+                                            </td>
+                                        </tr>
                                     @endforelse
                                 </tbody>
                             </table>
