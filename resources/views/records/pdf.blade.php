@@ -126,6 +126,11 @@
             <td>:</td>
             <td>{{ $record->info }}</td>
         </tr>
+        <tr>
+            <td>Konselor</td>
+            <td>:</td>
+            <td>{{ Auth::user()->name }}</td>
+        </tr>
     </table>
     <br>
 
@@ -147,6 +152,93 @@
                 <td>{{ $student->room }}</td>
             </tr>
         @endforeach
+    </table>
+    <br>
+    <table>
+        <tbody>
+
+            <tr>
+                <td>Tanggal,</td>
+            </tr>
+            <tr>
+                <td>Tertanda,</td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td>[..............................................]</td>
+            </tr>
+        </tbody>
     </table>
 
     <p class="text-right" style="font-size: 13px">Dicetak Pada: {{ now()->format('d-m-Y H:i') }}</p>
