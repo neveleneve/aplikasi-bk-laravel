@@ -19,11 +19,11 @@
                         @endif
                         <div class="row">
                             <div class="col-sm-4 my-mr-bottom">
-                                <a href="{{ url('/students/create') }}" class="btn btn-primary" role="button">Tambah
-                                    Siswa</a>
+                                {{-- <a href="{{ url('/students/create') }}" class="btn btn-primary" role="button">Tambah
+                                    Siswa</a> --}}
                             </div>
-                            <div class="col-sm-4 my-pagination-center">
-                                {{ $students->appends(Request::input())->render() }}
+                            <div class="col-sm-4">
+
                             </div>
                             <div class="col-sm-4 my-mr-bottom">
                                 <form action="/students">
@@ -76,8 +76,12 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="row mb-3 justify-content-center">
+                            <div class="col-12">
+                                {{ $students->links('layouts.pagination') }}
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>

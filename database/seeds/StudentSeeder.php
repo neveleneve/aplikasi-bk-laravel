@@ -2,6 +2,7 @@
 
 use App\Student;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
 
 class StudentSeeder extends Seeder
 {
@@ -12,27 +13,27 @@ class StudentSeeder extends Seeder
      */
     public function run()
     {
-        Student::insert([
-            [
-                'code' => '192039485',
-                'name' => 'Andriyan',
-                'level' => '10',
-                'program' => 'IPA',
-                'room' => '2',
-                'class' => '10 IPA 2',
+        $faker = Faker::create('id_ID');
+
+        for ($i = 0; $i < 50; $i++) {
+            $level = $faker->numberBetween($min = 10, $max = 12);
+            $program = [
+                'IPA',
+                'IPS',
+                'Bahasa',
+            ];
+            $chooseprogram = $program[rand(0, 2)];
+            $room = $faker->numberBetween($min = 1, $max = 5);
+            Student::insert([
+                'code' => $faker->numerify('#########'),
+                'name' => $faker->firstName . ' ' . $faker->lastName,
+                'level' => $level,
+                'program' => $chooseprogram,
+                'room' => $room,
+                'class' => $level . ' ' . $chooseprogram . ' ' . $room,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
-            ],
-            [
-                'code' => '918291039',
-                'name' => 'Budiyanto',
-                'level' => '12',
-                'program' => 'IPS',
-                'room' => '4',
-                'class' => '11 IPS 4',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ],
-        ]);
+            ]);
+        }
     }
 }

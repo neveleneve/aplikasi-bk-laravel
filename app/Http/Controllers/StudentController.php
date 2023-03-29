@@ -39,7 +39,7 @@ class StudentController extends Controller
                 ->orWhere('code', 'like', '%' . $search . '%')
                 ->orWhere('class', 'like', '%' . $search . '%');
         }
-        $students = $students->paginate(5);
+        $students = $students->paginate(10);
         return view('students.index', compact('students', 'search'));
     }
 
