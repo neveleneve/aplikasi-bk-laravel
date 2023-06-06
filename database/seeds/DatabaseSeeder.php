@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SubServiceSeeder::class);
         $this->call(MapelSeeder::class);
         $this->call(StudentSeeder::class);
+        $this->call(GuruSeeder::class);
     }
 }
