@@ -48,7 +48,7 @@
                                     <div class="form-group">
                                         <label for="guru">Guru yang Terlibat</label>
                                         <select name="guru" id="guru" class="form-control">
-                                            <option selected hidden>Pilih Guru</option>
+                                            <option selected hidden value="">Pilih Guru</option>
                                             <option value="0">Tidak Melibatkan Guru</option>
                                             @foreach ($teachers as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }} |

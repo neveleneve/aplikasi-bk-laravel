@@ -36,7 +36,7 @@
     <div id="app">
         {{-- <nav class="navbar navbar-expand-md navbar-light navbar-laravel"> --}}
         <nav class="navbar navbar-expand-md navbar-dark navbar-laravel bg-dark bg-bk">
-            <div class="container">
+            <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <div class="media">
                         <img class="align-self-center mr-3" src="{{ asset('images/logo.png') }}"
