@@ -28,8 +28,8 @@ class TeacherController extends Controller
                 'teachers.id',
                 'teachers.name',
                 'mapels.nama',
-            ])
-            ->get();
+            ])->orderBy('teachers.name')
+            ->paginate(10);
         return view('teachers.index', compact('teachers'));
     }
 

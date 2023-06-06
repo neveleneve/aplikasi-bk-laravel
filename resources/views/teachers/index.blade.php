@@ -60,6 +60,12 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <div class="row mb-3 justify-content-center">
+                            <div class="col-12">
+                                {{ $teachers->links('layouts.pagination') }}
+                            </div>
+                        </div>
                     </div>
 
                 </div>
