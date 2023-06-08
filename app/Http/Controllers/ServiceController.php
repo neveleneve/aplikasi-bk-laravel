@@ -14,12 +14,13 @@ class ServiceController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
-     // Fungsi untuk pesan
-    public function getMessage ($name, $type) {
-        $msg = 'Layanan <strong>'.$name.'</strong> berhasil di <strong>'.$type.'</strong>';
+
+    // Fungsi untuk pesan
+    public function getMessage($name, $type)
+    {
+        $msg = 'Layanan <strong>' . $name . '</strong> berhasil di <strong>' . $type . '</strong>';
         return $msg;
-    }     
+    }
 
     public function index()
     {
@@ -52,13 +53,13 @@ class ServiceController extends Controller
         ]);
 
         // dd("store");
-        
+
         Service::create([
-            'name'    => $request->name           
+            'name'    => $request->name
         ]);
 
         $msg = $this->getMessage($request->name, 'Tambah');
-        
+
         return redirect('services')->with('msg', $msg);
     }
 
@@ -102,14 +103,14 @@ class ServiceController extends Controller
         // dd("update");
         $service = Service::findOrFail($id);
         $name    = $service->name;
-        
+
         $service->update([
-            'name' => $request->name           
+            'name' => $request->name
         ]);
 
         $msg = $this->getMessage($name, 'Edit');
-        
-        return redirect('services')->with('msg', $msg);        
+
+        return redirect('services')->with('msg', $msg);
     }
 
     /**
@@ -123,10 +124,10 @@ class ServiceController extends Controller
         // dd("destroy");
         $service = Service::findOrFail($id);
         $name    = $service->name;
-        $service->delete();        
-      
+        $service->delete();
+
         $msg = $this->getMessage($name, 'Hapus');
 
-        return redirect('services')->with('msg', $msg); 
+        return redirect('services')->with('msg', $msg);
     }
 }

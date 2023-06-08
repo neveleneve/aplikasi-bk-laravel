@@ -173,6 +173,7 @@ class RecordController extends Controller
      */
     public function destroy($id)
     {
+        // dd($id);
         Record::findOrFail($id)->delete();
         return redirect('record')->with('msg', 'Bimbingan berhasil di <strong>Hapus</strong>');
     }

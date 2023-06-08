@@ -55,7 +55,9 @@
                                             <td>{{ $record->info }}</td>
                                             <td>
                                                 @foreach ($record->students as $student)
-                                                    <a href="/students/{{ $student->id }}">{{ $student->name }}</a>,&nbsp;
+                                                    <a href="/students/{{ $student->id }}">
+                                                        {{ $student->name }}
+                                                    </a>,&nbsp;
                                                 @endforeach
                                             </td>
                                             <td>
@@ -69,18 +71,20 @@
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                                             <a class="dropdown-item"
-                                                                href="/record/{{ $record->id }}">Lihat Data</a>
+                                                                href="{{ route('record.show', ['record' => $record->id]) }}">
+                                                                Lihat Data
+                                                            </a>
                                                             <a class="dropdown-item"
-                                                                href="/record/{{ $record->id }}/edit">Ubah Data</a>
-                                                            <a class="dropdown-item" href="#"
-                                                                onclick="event.preventDefault(); document.getElementById('delete-record-form').submit();">Hapus
-                                                                Data
+                                                                href="{{ route('record.edit', ['record' => $record->id]) }}">
+                                                                Ubah Data
                                                             </a>
                                                             <form id="delete-record-form"
-                                                                action="/record/{{ $record->id }}" method="POST"
-                                                                style="display: none;">
+                                                                action="{{ route('record.destroy', ['record' => $record->id]) }}"
+                                                                method="POST">
                                                                 @csrf
                                                                 <input type="hidden" name="_method" value="DELETE">
+                                                                <input type="submit" value="Hapus Data"
+                                                                    class="dropdown-item">
                                                             </form>
                                                             <a class="dropdown-item" target="__blank"
                                                                 href="/record/{{ $record->id }}/pdf">Cetak Bimbingan</a>
