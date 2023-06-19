@@ -9,4 +9,9 @@ class Teacher extends Model
     protected $fillable = [
         'name', 'mapel_id'
     ];
+
+    public function record()
+    {
+        return $this->hasOne('App\Record');
+    }
 }

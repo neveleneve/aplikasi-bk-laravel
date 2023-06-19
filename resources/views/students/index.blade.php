@@ -19,8 +19,9 @@
                         @endif
                         <div class="row">
                             <div class="col-sm-4 my-mr-bottom">
-                                {{-- <a href="{{ url('/students/create') }}" class="btn btn-primary" role="button">Tambah
-                                    Siswa</a> --}}
+                                <a href="{{ url('/students/create') }}" class="btn btn-primary" role="button">
+                                    Tambah Siswa
+                                </a>
                             </div>
                             <div class="col-sm-4">
 

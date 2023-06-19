@@ -26,13 +26,23 @@
                                 </div>
                             </div>
                             <div class="text-right" role="group">
-                                <a href="/students" class="btn btn-secondary" role="button">Kembali</a>
-                                <a href="/students/{{ $student->id }}/edit" class="btn btn-primary" role="button">Ubah
-                                    Data</a>
-                                <form action="/students/{{ $student->id }}" method="POST" style="display:inline">
+                                <a href="{{ route('students.index') }}" class="btn btn-secondary font-weight-bold"
+                                    role="button">
+                                    Kembali
+                                </a>
+                                <a href="{{ route('students.edit', ['id' => $student->id]) }}"
+                                    class="btn btn-primary font-weight-bold" role="button">
+                                    Ubah Data
+                                </a>
+                                <a href="{{ route('rekap', ['id' => $student->id]) }}" role="button"
+                                    class="btn btn-warning font-weight-bold" target="__blank">
+                                    Rekap
+                                </a>
+                                <form action="{{ route('students.destroy', ['id' => $student->id]) }}" method="POST"
+                                    style="display:inline">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="_method" value="DELETE" readonly>
-                                    <button class="btn btn-danger">Hapus</button>
+                                    <button class="btn btn-danger font-weight-bold">Hapus</button>
                                 </form>
                             </div>
                         </form>

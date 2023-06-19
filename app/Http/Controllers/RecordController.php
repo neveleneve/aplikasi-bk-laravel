@@ -85,14 +85,17 @@ class RecordController extends Controller
             'subservice_id' => $request->subservice_id,
             'place' => $request->place,
             'desc' => $request->desc,
-            'id_guru' => $request->guru,
+            'teacher_id' => $request->guru,
             'info' => $request->info
         ]);
 
         // Save to record_student
         $record->students()->attach($request->students['id']);
 
-        return redirect('record')->with('msg', 'Bimbingan berhasil di <strong>Submit</strong>');
+        return redirect('record')->with([
+            'msg' => 'Bimbingan berhasil di <strong>Submit</strong>',
+            'color' => 'success',
+        ]);
     }
 
     /**
@@ -152,7 +155,7 @@ class RecordController extends Controller
         // Update record
         $record->update([
             'date'          => $request->date,
-            'id_guru'          => $request->guru,
+            'teacher_id'    => $request->guru,
             'subservice_id' => $request->subservice_id,
             'place'         => $request->place,
             'desc'          => $request->desc,

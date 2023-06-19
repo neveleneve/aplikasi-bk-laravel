@@ -8,7 +8,7 @@
                     <div class="card-header text-center">Bimbingan</div>
                     <div class="card-body">
                         @if (session('msg'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <div class="alert alert-{{ session('color') }} alert-dismissible fade show" role="alert">
                                 {!! session('msg') !!}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -16,14 +16,14 @@
                             </div>
                         @endif
                         <div class="row">
-                            <div class="col-sm-4 my-mr-bottom">
-                                <a href="{{ url('/record/create') }}" class="btn btn-primary" role="button">Tambah
-                                    Bimbingan</a>
+                            <div class="col-12 col-xl-4 mb-2 mb-xl-0">
+                                <a href="{{ url('/record/create') }}" class="btn btn-primary btn-block font-weight-bold"
+                                    role="button">
+                                    Tambah Bimbingan
+                                </a>
                             </div>
-                            <div class="col-sm-4 my-pagination-center">
-                                {{ $records->appends(Request::input())->render() }}
-                            </div>
-                            <div class="col-sm-4 my-mr-bottom">
+                            <div class="col-0 col-xl-4"></div>
+                            <div class="col-12 col-xl-4 my-mr-bottom">
                                 <form action="/record">
                                     <input type="text" name="search" class="form-control"
                                         placeholder="Search dengan nis atau nama siswa" value="{{ $search }}">
@@ -48,7 +48,7 @@
                                     @forelse ($records as $record)
                                         <tr>
                                             <th scope="row">{{ $loop->index + 1 }}</th>
-                                            <td>{{ $record->date }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($record->date)) }}</td>
                                             <td>{{ $record->subservice->name }}</td>
                                             <td>{{ $record->place }}</td>
                                             <td>{{ $record->desc }}</td>
@@ -108,4 +108,11 @@
             </div>
         </div>
     </div>
+    @if (session('msg'))
+        <script>
+            setTimeout(() => {
+                window.close();
+            }, 1000);
+        </script>
+    @endif
 @endsection

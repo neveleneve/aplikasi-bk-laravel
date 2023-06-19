@@ -14,12 +14,19 @@
                                 @endforeach
                             </div>
                         @endif
+                        <div class="row mb-3">
+                            <div class="col-2">
+                                <a href="{{ route('students.index') }}" class="btn btn-danger btn-block"
+                                    role="button">Batal</a>
+                            </div>
+                        </div>
                         <form action="{{ route('students.store') }}" method="POST">
+                            <input type="hidden" name="tipe" value="0">
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label class="font-weight-bold" for="code">NIS</label>
                                     <input name="code" type="text" class="form-control"
-                                        placeholder="Nomor Induk Siswa" value="{{ old('code') }}">
+                                        placeholder="Nomor Induk Siswa" value="{{ old('code') }}" maxlength="10">
                                 </div>
                                 <div class="form-group col-md-8">
                                     <label class="font-weight-bold" for="name">Nama</label>
@@ -63,7 +70,32 @@
                             </div>
                             {{ csrf_field() }}
                             <div class="text-right" role="group">
-                                <a href="{{ route('students.index') }}" class="btn btn-danger" role="button">Batal</a>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col-5">
+                                <hr>
+                            </div>
+                            <div class="col-2 text-center">
+                                ATAU
+                            </div>
+                            <div class="col-5">
+                                <hr>
+                            </div>
+                        </div>
+                        <form action="{{ route('students.store') }}" method="post" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="font-weight-bold" for="file_csv">File .csv</label>
+                                    <input name="file_csv" id="file_csv" type="file" class="form-control"
+                                        placeholder="Nomor Induk Siswa" accept=".csv">
+                                    <a href="{{ route('download.csv') }}"><small>Contoh format file .csv</small></a>
+                                </div>
+                            </div>
+                            <input type="hidden" name="tipe" value="1">
+                            <div class="text-right" role="group">
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form>

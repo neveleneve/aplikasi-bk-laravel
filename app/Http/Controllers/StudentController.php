@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\StudentsImport;
 use Illuminate\Http\Request;
 use App\Student;
+use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-
     // Untuk diakses di tambah dan edit
     public $programs = array("IPA", "IPS", "Bahasa");
 
@@ -43,67 +40,80 @@ class StudentController extends Controller
         return view('students.index', compact('students', 'search'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $programs = $this->programs;
         return view('students.create', compact('programs'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'code'    => 'required|digits_between:9,10',
-            'name'    => 'required',
-            'level'   => 'required',
-            'program' => 'required',
-            'room'    => 'required'
-        ]);
+        if ($request->tipe == 0) {
+            $this->validate($request, [
+                'code'    => 'required|digits_between:9,10',
+                'name'    => 'required',
+                'level'   => 'required',
+                'program' => 'required',
+                'room'    => 'required'
+            ]);
 
-        $class = $this->getClass($request->level, $request->program, $request->room);
+            $class = $this->getClass($request->level, $request->program, $request->room);
 
-        Student::create([
-            'code'    => $request->code,
-            'name'    => $request->name,
-            'level'   => $request->level,
-            'program' => $request->program,
-            'room'    => $request->room,
-            'class'   => $class
-        ]);
+            Student::create([
+                'code'    => $request->code,
+                'name'    => $request->name,
+                'level'   => $request->level,
+                'program' => $request->program,
+                'room'    => $request->room,
+                'class'   => $class
+            ]);
 
-        $msg = $this->getMessage($request->code, 'Tambah', $request->name);
+            $msg = $this->getMessage($request->code, 'Tambah', $request->name);
+        } elseif ($request->tipe == 1) {
+            $this->validate($request, [
+                'file_csv'    => 'required'
+            ]);
 
-        return redirect('students')->with('msg', $msg);
+            $namafile = 'DataSiswa.csv';
+            $file = $request->file('file_csv');
+            $destination = public_path('csv');
+            $file->move($destination, $namafile);
+            $datacsv = $this->csvtoarray(public_path('csv/DataSiswa.csv'));
+            $datax = $datacsv;
+
+            for ($i = 0; $i < count($datax); $i++) {
+                $cekdata = Student::where('code', $datacsv[$i]['nim'])->count();
+                if ($cekdata > 0) {
+                    Student::where('code', $datacsv[$i]['nim'])->update([
+                        'name'    => ucwords(strtolower($datacsv[$i]['name'])),
+                        'level'   => $datacsv[$i]['kelas'],
+                        'program' => ucfirst(strtolower($datacsv[$i]['jurusan'])),
+                        'room'    => $datacsv[$i]['ruangan'],
+                        'class'   => $datacsv[$i]['kelas'] . ' ' . ucfirst(strtolower($datacsv[$i]['jurusan'])) . ' ' . $datacsv[$i]['ruangan'],
+                    ]);
+                } else {
+                    Student::insert([
+                        'code'    => $datacsv[$i]['nim'],
+                        'name'    => ucwords(strtolower($datacsv[$i]['name'])),
+                        'level'   => $datacsv[$i]['kelas'],
+                        'program' => ucfirst(strtolower($datacsv[$i]['jurusan'])),
+                        'room'    => $datacsv[$i]['ruangan'],
+                        'class'   => $datacsv[$i]['kelas'] . ' ' . ucfirst(strtolower($datacsv[$i]['jurusan'])) . ' ' . $datacsv[$i]['ruangan'],
+                    ]);
+                }
+            }
+            File::delete('csv/DataMahasiswa.csv');
+            $msg = "Data siswa berhasil ditambah!";
+        }
+        return redirect(route('students.index'))->with('msg', $msg);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $student = Student::with('records')->findOrFail($id);
         return view('students.single', compact('student'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $student = Student::findOrFail($id);
@@ -111,13 +121,6 @@ class StudentController extends Controller
         return view('students.edit', compact('student', 'programs'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -147,12 +150,6 @@ class StudentController extends Controller
         return redirect('students')->with('msg', $msg);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $student = Student::findOrFail($id);
@@ -172,5 +169,39 @@ class StudentController extends Controller
                 ->orWhere('class', 'like', '%' . $search . '%')->get();
             return $students;
         }
+    }
+
+    public function rekap($id)
+    {
+        $data = Student::with('records', 'records.subservice')
+            ->findOrFail($id);
+        // dd($data);
+        // return view('records.rekap', [
+        //     'data' => $data
+        // ]);
+        return PDF::loadView('records.rekap', [
+            'data' => $data
+        ])->setPaper('a4', 'potrait')
+            ->setOptions(['defaultFont' => 'sans-serif', 'isRemoteEnabled' => true])
+            ->stream('LaporanKegiatan-1-' . now()->format('dmY') . '.pdf');
+    }
+
+    public function csvtoarray($filename = '', $delimiter = ';')
+    {
+        if (!file_exists($filename) || !is_readable($filename)) {
+            return false;
+        }
+        $header = null;
+        $data = [];
+        if (($handle = fopen($filename, 'r')) !== false) {
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== false) {
+                if (!$header)
+                    $header = $row;
+                else
+                    $data[] = array_combine($header, $row);
+            }
+            fclose($handle);
+        }
+        return $data;
     }
 }

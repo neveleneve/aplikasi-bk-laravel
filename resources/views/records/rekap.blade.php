@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Kegitatan {{ $record->id }} | {{ now()->format('Ymd') }}</title>
+    <title>Rekap Data Bimbingan Konseling</title>
     <link href="{{ asset('images/logo.png') }}" rel="icon" type="image/png">
     <style>
         table {
@@ -85,84 +85,54 @@
         <tr>
             <td style="width: 15%;">
                 <img src="{{ asset('images/logo.png') }}" style="width: 70px;">
-                {{-- <img src="https://bklaravel.test/images/logo.jpg" style="width: 70px;"> --}}
             </td>
             <td style="width: 85%;">
-                <div class="head1">LAPORAN KEGIATAN BIMBINGAN KONSELING</div>
+                <div class="head1">REKAP KEGIATAN BIMBINGAN KONSELING</div>
                 <div class="head2">SMA NEGERI 4 Tanjungpinang</div>
                 <div class="head3">Jl. Pemuda No. 30 Kota Tanjungpinang Telp. (0771) 21717</div>
             </td>
         </tr>
     </table>
     <br>
+    <h2 class="text-center">REKAP BIMBINGAN KONSELING</h2>
     <table class="report report-rincian">
         <tr>
-            <td style="width: 20%;">Tanggal</td>
-            <td style="width: 2%;">:</td>
-            <td>{{ \Carbon\Carbon::parse($record->date)->format('d-m-Y') }}</td>
+            <td>Nama</td>
+            <td>:</td>
+            <td>{{ $data->name }}</td>
         </tr>
         <tr>
-            <td>Layanan</td>
+            <td>Kelas</td>
             <td>:</td>
-            <td>{{ $record->subservice->service->name }}</td>
-        </tr>
-        <tr>
-            <td>Nama Kegiatan</td>
-            <td>:</td>
-            <td>{{ $record->subservice->name }}</td>
-        </tr>
-        <tr>
-            <td>Tempat</td>
-            <td>:</td>
-            <td>{{ $record->place }}</td>
-        </tr>
-        <tr>
-            <td>Uraian Kegiatan</td>
-            <td>:</td>
-            <td>{{ $record->desc }}</td>
-        </tr>
-        <tr>
-            <td>Keterangan</td>
-            <td>:</td>
-            <td>{{ $record->info }}</td>
-        </tr>
-        <tr>
-            <td>Guru yang Terlibat</td>
-            <td>:</td>
-            <td>
-                @if ($record->teacher_id == 0)
-                    Tidak Melibatkan Guru
-                @else
-                    {{ App\Http\Controllers\RecordController::namaGuru($record->teacher_id) }}
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <td>Konselor</td>
-            <td>:</td>
-            <td>{{ Auth::user()->name }}</td>
+            <td>{{ $data->class }}</td>
         </tr>
     </table>
     <br>
-
-    <h4>SISWA YANG BERSANGKUTAN</h4>
     <table class="report-siswa">
         <tr>
-            <th style="width: 21%;">NIS</th>
-            <th style="width: 30%;">Nama</th>
-            <th style="width: 13%;">KK</th>
-            <th style="width: 13%;">Tingkat</th>
-            <th style="width: 13%;">Kelas</th>
+            <td>No</td>
+            <td>Tanggal</td>
+            <td>Nama Kegiatan</td>
+            <td>Tempat</td>
+            <td>Uraian</td>
+            <td>Keterangan</td>
         </tr>
-        @foreach ($record->students as $student)
+        @forelse ($data->records as $item)
             <tr>
-                <td class="text-left">{{ $student->code }}</td>
-                <td class="text-left">{{ $student->name }}</td>
-                <td>{{ $student->program }}</td>
-                <td>{{ $student->level }}</td>
-                <td>{{ $student->room }}</td>
+                <td>{{ $loop->index + 1 }}</td>
+                <td>{{ date('d-m-Y', strtotime($item->date)) }}</td>
+                <td>{{ $item->subservice->name }}</td>
+                <td>{{ $item->place }}</td>
+                <td>{{ $item->desc }}</td>
+                <td>{{ $item->info }}</td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="8">
+                    <h2 class="text-center">Data Kosong</h2>
+                </td>
+            </tr>
+        @endforelse
     </table>
     <br>
     <table>
@@ -251,8 +221,6 @@
             </tr>
         </tbody>
     </table>
-
-    <p class="text-right" style="font-size: 13px">Dicetak Pada: {{ now()->format('d-m-Y H:i') }}</p>
 </body>
 
 </html>

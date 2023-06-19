@@ -51,10 +51,10 @@
                                         <label for="guru">Guru yang Terlibat</label>
                                         <select name="guru" id="guru" class="form-control">
                                             <option selected hidden>Pilih Guru</option>
-                                            <option {{ $record->id_guru == 0 ? 'selected' : null }} value="0">Tidak
+                                            <option {{ $record->teacher_id == 0 ? 'selected' : null }} value="0">Tidak
                                                 Melibatkan Guru</option>
                                             @foreach ($teachers as $item)
-                                                <option {{ $item->id == $record->id_guru ? 'selected' : null }}
+                                                <option {{ $item->id == $record->teacher_id ? 'selected' : null }}
                                                     value="{{ $item->id }}">{{ $item->name }} |
                                                     {{ $item->nama }}</option>
                                             @endforeach
